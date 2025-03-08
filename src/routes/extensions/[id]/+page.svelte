@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { PageProps } from './$types';
+	import type { PageProps } from "./$types";
 
 	let { data, form }: PageProps = $props();
-    const ext = data.extension
+    const ext = data.extension;
 </script>
 
 <h1>extension</h1>

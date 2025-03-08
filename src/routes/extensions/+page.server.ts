@@ -1,11 +1,10 @@
-import { fail, redirect } from "@sveltejs/kit";
 import { eq } from 'drizzle-orm';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
-import type { Actions, PageServerLoad } from "./$types";
+import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async (event) => {
+export const load: PageServerLoad = async () => {
 
     const result = await db
             .select({
