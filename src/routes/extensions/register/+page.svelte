@@ -1,11 +1,17 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-	import type { PageProps } from './$types';
+	import type { PageProps } from "./$types";
 
 	let { data, form }: PageProps = $props();
 </script>
 {#if form?.registered}
-<p>拡張機能「<a href="/extensions/{form?.extension.id.toString()}">{form?.extension.title}</a>」が登録されました</p>
+<p>
+	拡張機能「
+	<a href="/extensions/{form?.extension.id.toString()}">
+		{form?.extension.title}
+	</a>
+	」が登録されました
+</p>
 {:else}
 <form method="post" use:enhance>
 	<label>

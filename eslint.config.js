@@ -5,6 +5,7 @@ import globals from 'globals';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript-eslint';
 import svelteConfig from './svelte.config.js';
+import myStylisticConfig from './stylistic-config.js';
 const gitignorePath = fileURLToPath(new URL("./.gitignore", import.meta.url));
 
 export default ts.config(
@@ -17,10 +18,11 @@ export default ts.config(
 	  globals: {
 	    ...globals.browser,
 	    ...globals.node
-	  }
+	  },
 	}
   },
   {
+    extends: [...myStylisticConfig],
     files: ["**/*.svelte", "**/*.svelte.ts", "**/*.svelte.js"],
     ignores: ["eslint.config.js", "svelte.config.js"],
 

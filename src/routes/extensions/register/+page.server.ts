@@ -1,5 +1,4 @@
 import { fail, redirect } from "@sveltejs/kit";
-import { invalidateSession, deleteSessionTokenCookie } from "$lib/server/auth";
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 

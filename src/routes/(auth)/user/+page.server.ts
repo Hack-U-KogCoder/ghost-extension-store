@@ -20,6 +20,6 @@ export const actions: Actions = {
 		}
 		await invalidateSession(event.locals.session.id);
 		deleteSessionTokenCookie(event);
-		return redirect(302, "/login");
+		return redirect(302, "/extensions");
 	}
 };
