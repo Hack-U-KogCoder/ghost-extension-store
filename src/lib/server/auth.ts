@@ -1,9 +1,11 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { sha256 } from '@oslojs/crypto/sha2';
-import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
+import { encodeBase64url, encodeHexLowerCase, encodeBase32LowerCase } from '@oslojs/encoding';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
+import { GitHub } from "arctic";
+import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "$env/static/private";
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -31,7 +33,7 @@ export async function validateSessionToken(token: string) {
 	const [result] = await db
 		.select({
 			// Adjust user table here to tweak returned data
-			user: { id: table.user.id, username: table.user.username },
+			user: { id: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl },
 			session: table.session
 		})
 		.from(table.session)
@@ -79,3 +81,41 @@ export function deleteSessionTokenCookie(event: RequestEvent) {
 		path: '/'
 	});
 }
+
+export async function getUserFromGitHubId(gitHubUserId: number) {
+	const [result] = await db
+			.select({
+				// Adjust user table here to tweak returned data
+				user: { id: table.user.id, githubId: table.user.githubId, username: table.user.username },
+			})
+			.from(table.user)
+			.where(eq(table.user.githubId, gitHubUserId));
+
+	if (!result) {
+				return null;
+			}
+	return result.user
+}
+
+export async function createGitHubUser(
+	gitHubUserId: number, githubUsername: string, githubAvatarUrl: string) {
+	const userId = generateUserId()
+	const user: table.User = {
+		id: userId,
+		githubId: gitHubUserId,
+		username: githubUsername,
+		githubAvatarUrl: githubAvatarUrl,
+		passwordHash: null,
+	};
+	await db.insert(table.user).values(user);
+	return user;
+}
+
+function generateUserId() {
+	// ID with 120 bits of entropy, or about the same as UUID v4.
+	const bytes = crypto.getRandomValues(new Uint8Array(15));
+	const id = encodeBase32LowerCase(bytes);
+	return id;
+}
+
+export const github = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, null);

@@ -1,10 +1,13 @@
+import { sql } from "drizzle-orm";
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
+// User and Session
 export const user = sqliteTable('user', {
     id: text('id').primaryKey(),
-    age: integer('age'),
     username: text('username').notNull().unique(),
-    passwordHash: text('password_hash').notNull()
+    githubId: integer('github_id').unique(),
+    githubAvatarUrl: text('github_avatar_url'),
+    passwordHash: text('password_hash')
 });
 
 export const session = sqliteTable("session", {
@@ -14,5 +17,4 @@ export const session = sqliteTable("session", {
 });
 
 export type Session = typeof session.$inferSelect;
-
 export type User = typeof user.$inferSelect;
