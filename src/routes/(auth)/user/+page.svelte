@@ -13,5 +13,5 @@
     class="mt-6 rounded-full h-auto w-16" 
     />
 <form method="post" use:enhance>
-    <button>Sign out</button>
+    <button>ログアウト</button>
 </form>

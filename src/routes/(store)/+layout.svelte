@@ -1,16 +1,16 @@
 <script lang="ts">
-	import "../app.css";
+	import "../../app.css";
 	import { enhance } from "$app/forms";
 	import type { LayoutProps } from "./$types";
 	let { data, children }: LayoutProps = $props();
 </script>
-<header class="flex justify-between border-b border-gray-300 p-2">
-	<h1 class="flex items-center text-4xl text-brand"><a href="/extensions">ghost extension</a></h1>
+
+<header class="flex justify-between border-b border-gray-300 p-2 bg-stone-50">
+	<h1 class="flex items-center text-4xl text-brand"><a href="/dev">ghost extension</a></h1>
 <nav class="flex items-center gap-4 font-semibold">
-	<div>Page</div>
-	<div>Page1</div>
+	<div><a class="hover:border-b-2" href="/">ストア</a></div>
+	<div><a class="hover:border-b-2" href="/dev">開発</a></div>
 	{#if data.user}
-	{data.user.username}
 	<img
 	src={data.user.githubAvatarUrl} 
 	alt="icon"
@@ -24,4 +24,6 @@
 	{/if}
 </nav>
 </header>
+<div class="bg-amber-50 m-0 items-center">
 {@render children()}
+</div>

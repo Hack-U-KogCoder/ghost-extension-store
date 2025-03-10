@@ -1,5 +1,5 @@
 import { generateSessionToken, createSession, setSessionTokenCookie } from "$lib/server/auth";
-import { github, createGitHubUser, getUserFromGitHubId } from "$lib/server/auth";
+import { github, createGitHubUser, getUserFromGitHubId, setGitHubToken } from "$lib/server/auth";
 
 import type { RequestEvent } from "@sveltejs/kit";
 import type { OAuth2Tokens } from "arctic";
@@ -28,9 +28,11 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			status: 400
 		});
 	}
+	const githubToken = tokens.accessToken()
+
 	const githubUserResponse = await fetch("https://api.github.com/user", {
 		headers: {
-			Authorization: `Bearer ${tokens.accessToken()}`
+			Authorization: `Bearer ${githubToken}`
 		}
 	});
 	const githubUser = await githubUserResponse.json();
@@ -41,20 +43,21 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	// TODO: Replace this with your own DB query.
 	const existingUser = await getUserFromGitHubId(githubUserId);
 
-	if (existingUser) {
+	if (existingUser?.githubId) {
+		setGitHubToken(existingUser.githubId, githubToken)
 		const sessionToken = generateSessionToken();
 		const session = await createSession(sessionToken, existingUser.id);
 		setSessionTokenCookie(event, sessionToken, session.expiresAt);
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/extensions"
+				Location: "/dev/dashboard"
 			}
 		});
 	}
 
 	// TODO: Replace this with your own DB query.
-	const user = await createGitHubUser(githubUserId, githubUsername, githubAvatarUrl);
+	const user = await createGitHubUser(githubUserId, githubUsername, githubAvatarUrl, githubToken);
 
 	const sessionToken = generateSessionToken();
 	const session = await createSession(sessionToken, user.id);
@@ -63,7 +66,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	return new Response(null, {
 		status: 302,
 		headers: {
-			Location: "/extensions"
+			Location: "/dev/dashboard"
 		}
 	});
 }
