@@ -33,7 +33,12 @@ export async function validateSessionToken(token: string) {
 	const [result] = await db
 		.select({
 			// Adjust user table here to tweak returned data
-			user: { id: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl },
+			user: { 
+				id: table.user.id,
+				username: table.user.username,
+				githubToken: table.user.githubToken,
+				githubAvatarUrl: table.user.githubAvatarUrl
+			},
 			session: table.session
 		})
 		.from(table.session)
@@ -86,7 +91,12 @@ export async function getUserFromGitHubId(gitHubUserId: number) {
 	const [result] = await db
 			.select({
 				// Adjust user table here to tweak returned data
-				user: { id: table.user.id, githubId: table.user.githubId, username: table.user.username },
+				user: { 
+					id: table.user.id,
+					githubId: table.user.githubId,
+					username: table.user.username,
+					githubToken: table.user.githubToken
+				},
 			})
 			.from(table.user)
 			.where(eq(table.user.githubId, gitHubUserId));
@@ -98,17 +108,28 @@ export async function getUserFromGitHubId(gitHubUserId: number) {
 }
 
 export async function createGitHubUser(
-	gitHubUserId: number, githubUsername: string, githubAvatarUrl: string) {
+	gitHubUserId: number, githubUsername: string, githubAvatarUrl: string, githubToken: string) {
 	const userId = generateUserId()
 	const user: table.User = {
 		id: userId,
 		githubId: gitHubUserId,
 		username: githubUsername,
+		githubToken: githubToken,
 		githubAvatarUrl: githubAvatarUrl,
 		passwordHash: null,
 	};
 	await db.insert(table.user).values(user);
 	return user;
+}
+
+export async function setGitHubToken(
+	gitHubUserId: number, githubToken: string
+) {
+
+	await db
+		.update(table.user)
+		.set({ githubToken: githubToken })
+		.where(eq(table.user.githubId, gitHubUserId));
 }
 
 function generateUserId() {

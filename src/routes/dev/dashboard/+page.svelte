@@ -12,7 +12,7 @@
     }
 
 </script>
-<h1>developper's</h1>
+<h1>ダッシュボード</h1>
 {#if !data.user}
 <div class="m-2">
     {data.user}
