@@ -17,10 +17,10 @@
 	class="rounded-full h-auto w-10" 
 	/>
 	<form method="post" action="/user" use:enhance>
-    	<button>ログアウト</button>
+    	<button type="submit">ログアウト</button>
 	</form>
 	{:else}
-	<div><a href="/login">ログイン</a></div>
+	<div><a class="hover:border-b-2" href="/login">ログイン</a></div>
 	{/if}
 </nav>
 </header>

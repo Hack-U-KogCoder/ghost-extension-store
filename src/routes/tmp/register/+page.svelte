@@ -16,7 +16,7 @@
 <form method="post" use:enhance>
 	<label>
 		UserId
-		<input value={data.user.id} name="userId" type="hidden" required>
+		<input value={data.user.id} name="userId" type="number" hidden required>
 	</label>
     <label>
 		title
@@ -25,6 +25,18 @@
     <label>
 		description
 		<input name="description" type="textarea" required>
+	</label>
+	<label>
+	icon_url
+	<input name="icon-url" type="textarea" required>
+	</label>
+	<label>
+		category
+		<input name="category" type="textarea" required>
+	</label>
+	<label>
+		version
+		<input name="version" type="textarea" required>
 	</label>
 	<button>新規拡張機能を登録</button>
 </form>

@@ -14,7 +14,8 @@
             <input 
                 class="field-sizing-content max-w-full min-w-full"
                 list="repository-suggestions"
-                value={form?.repository.name ?? ""}
+                value={form?.status?.formRepoName ?? ""}
+                placeholder={`${data.user.username}/hoge または https://github.com/${data.user.username}/hoge`}
                 name="repository-name"
                 autocomplete="off"
                 required/>
@@ -25,6 +26,9 @@
                 {/each}
                 {/if}
             </datalist>
+            <div>
+                <span class="font-bold text-red-500">{form?.status?.message}</span>
+            </div>
             <button
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold my-1 py-2 px-4 rounded"
                 type="submit">リポジトリを取得</button>

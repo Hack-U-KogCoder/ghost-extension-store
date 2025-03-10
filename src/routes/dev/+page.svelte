@@ -27,4 +27,3 @@
     <a href="/dev/dashboard">あなたのダッシュボード</a>
 </div>
 {/if}
-

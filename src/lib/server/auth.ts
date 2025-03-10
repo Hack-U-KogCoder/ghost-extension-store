@@ -1,7 +1,7 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { sha256 } from '@oslojs/crypto/sha2';
-import { encodeBase64url, encodeHexLowerCase, encodeBase32LowerCase } from '@oslojs/encoding';
+import { encodeBase64url, encodeHexLowerCase} from '@oslojs/encoding';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 import { GitHub } from "arctic";
@@ -36,6 +36,7 @@ export async function validateSessionToken(token: string) {
 			user: { 
 				id: table.user.id,
 				username: table.user.username,
+				githubId: table.user.githubId,
 				githubToken: table.user.githubToken,
 				githubAvatarUrl: table.user.githubAvatarUrl
 			},
@@ -109,9 +110,7 @@ export async function getUserFromGitHubId(gitHubUserId: number) {
 
 export async function createGitHubUser(
 	gitHubUserId: number, githubUsername: string, githubAvatarUrl: string, githubToken: string) {
-	const userId = generateUserId()
-	const user: table.User = {
-		id: userId,
+	const user = {
 		githubId: gitHubUserId,
 		username: githubUsername,
 		githubToken: githubToken,
@@ -130,13 +129,6 @@ export async function setGitHubToken(
 		.update(table.user)
 		.set({ githubToken: githubToken })
 		.where(eq(table.user.githubId, gitHubUserId));
-}
-
-function generateUserId() {
-	// ID with 120 bits of entropy, or about the same as UUID v4.
-	const bytes = crypto.getRandomValues(new Uint8Array(15));
-	const id = encodeBase32LowerCase(bytes);
-	return id;
 }
 
 export const github = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, null);

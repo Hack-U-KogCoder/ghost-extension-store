@@ -22,19 +22,27 @@ export const actions: Actions = {
         console.log("actioned")
 
         const data = await event.request.formData()
-        const userId = data.get("userId")?.toString()
+        const userIdStr = data.get("userId")?.toString() ?? ""
+        const userId = parseInt(userIdStr)
         const title = data.get("title")?.toString() ?? ""
         const description = data.get("description")?.toString() ?? ""
+        const icon_url = data.get("icon-url")?.toString() ?? ""
+        const categoryStr = data.get("category")?.toString() ?? ""
+        const category = parseInt(categoryStr)
+        const version = data.get("version")?.toString() ?? ""
 
 
-        if (!event.locals.user || userId !== event.locals.user.id) {
+        if (!event.locals.user || userId || userId !== event.locals.user.id) {
             return fail(401);
         }
 
         const extension = {
                 userId: userId,
                 title: title,
-                description: description
+                description: description,
+                icon_url: icon_url,
+                categoryId: category,
+                version: version,
             };
         const [result] = await db.insert(table.extension).values(extension).returning();
         console.log(result)

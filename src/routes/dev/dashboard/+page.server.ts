@@ -15,7 +15,7 @@ export const load: PageServerLoad = async (event) => {
                 })
                 .from(table.extension)
                 .innerJoin(table.user, eq(table.extension.userId, table.user.id))
-                .where(eq(table.extension.userId, event.locals.user?.id ?? ""));
+                .where(eq(table.extension.userId, event.locals.user?.id ?? 0));
     
         return {
             user: event.locals.user,
