@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
-    import type { PageServerData } from './$types';
+    import type { PageServerData } from "./$types";
 
     let { data }: { data: PageServerData } = $props();
 </script>
@@ -13,5 +13,5 @@
     class="mt-6 rounded-full h-auto w-16" 
     />
 <form method="post" use:enhance>
-    <button>Sign out</button>
+    <button>ログアウト</button>
 </form>

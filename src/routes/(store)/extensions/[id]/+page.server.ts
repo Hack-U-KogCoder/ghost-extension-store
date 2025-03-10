@@ -1,4 +1,4 @@
-import { fail, redirect } from "@sveltejs/kit";
+import { fail, error } from "@sveltejs/kit";
 import { eq } from 'drizzle-orm';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ params }) => {
     const id = parseInt(params.id)
 
     if (!id) {
-        return fail(404)
+        return error(404, {"message": "Page Not Found"})
     }
 
     const [result] = await db
@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ params }) => {
             .where(eq(table.extension.id, id));
     
     if (!result) {
-        return fail(404)
+        return error(404, {"message": "Page Not Found"})
     }
 
     return {
@@ -38,7 +38,6 @@ export const actions: Actions = {
         if (event.locals.session === null) {
             return fail(401);
         }
-        console.log("actioned")
 
         const id = parseInt(event.params.id)
 
@@ -78,11 +77,6 @@ export const actions: Actions = {
         console.log("actioned")
 
         const id = parseInt(event.params.id)
-
-        const data = await event.request.formData()
-        const title = data.get("title")?.toString() ?? ""
-        const description = data.get("description")?.toString() ?? ""
-
         const [result0] = await db
             .select({id: table.extension.id, userId: table.extension.userId})
             .from(table.extension)
@@ -96,10 +90,6 @@ export const actions: Actions = {
             return {success: false, message: "forbidden"};
         }
 
-        const extension = {
-                title: title,
-                description: description
-            };
         const [result] = await db
             .delete(table.extension)
             .where(eq(table.extension.id, id))

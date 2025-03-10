@@ -22,8 +22,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	let tokens: OAuth2Tokens;
 	try {
 		tokens = await github.validateAuthorizationCode(code);
+	// eslint-disable-next-line
 	} catch (e) {
-		// Invalid code or client credentials
 		return new Response(null, {
 			status: 400
 		});
@@ -36,7 +36,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	const githubUser = await githubUserResponse.json();
 	const githubUserId = githubUser.id;
 	const githubUsername = githubUser.login;
-	const githubEmail = githubUser.email
 	const githubAvatarUrl = githubUser.avatar_url;
 
 	// TODO: Replace this with your own DB query.
@@ -49,7 +48,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: "/"
+				Location: "/dev/dashboard"
 			}
 		});
 	}
@@ -64,7 +63,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	return new Response(null, {
 		status: 302,
 		headers: {
-			Location: "/"
+			Location: "/dev/dashboard"
 		}
 	});
 }

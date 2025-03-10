@@ -22,6 +22,9 @@ export const extension = sqliteTable("extension", {
     userId: text('user_id').notNull().references(() => user.id),
     title: text('title').notNull(),
     description: text('description').notNull(),
+    // icon_url: text('icon_url').notNull(),
+    // category: text('category').notNull(),
+    version: text('version').notNull(),
     created_at: integer({ mode: "timestamp" }).notNull()
         .default(sql`(unixepoch())`),
     updated_at: integer({ mode: "timestamp" }).notNull()
