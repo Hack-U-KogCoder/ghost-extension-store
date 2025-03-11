@@ -30,7 +30,7 @@ jobs:
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
-      # 本記事のメイン
+
       - name: Run reviewdog with eslint
         uses: reviewdog/action-eslint@v1
         with:
@@ -38,3 +38,4 @@ jobs:
           filter_mode: diff_context
           fail_level: error
           workdir: ${{ matrix.env }}
+          eslint_flags: ". --ext js,ts,svelte"
