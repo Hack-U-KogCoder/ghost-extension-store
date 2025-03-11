@@ -17,11 +17,11 @@ export function generateSessionToken() {
 	return token;
 }
 
-export async function createSession(token: string, userId: string) {
+export async function createSession(token: string, userId: number) {
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 	const session: table.Session = {
 		id: sessionId,
-		userId,
+		userId: userId.toString(),
 		expiresAt: new Date(Date.now() + DAY_IN_MS * 30)
 	};
 	await db.insert(table.session).values(session);
@@ -117,8 +117,22 @@ export async function createGitHubUser(
 		githubAvatarUrl: githubAvatarUrl,
 		passwordHash: null,
 	};
-	await db.insert(table.user).values(user);
-	return user;
+	const [dbRes] = await db.insert(table.user).values(user).returning();
+	return dbRes;
+}
+
+export async function updateGitHubUser(
+	gitHubUserId: number, githubUsername: string, githubAvatarUrl: string, githubToken: string) {
+	const user_update = {
+		githubId: gitHubUserId,
+		username: githubUsername,
+		githubToken: githubToken,
+		githubAvatarUrl: githubAvatarUrl,
+		passwordHash: null,
+	};
+	await db
+		.update(table.user).set(user_update)
+		.where(eq(table.user.githubId, gitHubUserId));
 }
 
 export async function setGitHubToken(

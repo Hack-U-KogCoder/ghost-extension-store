@@ -1,5 +1,5 @@
 import { generateSessionToken, createSession, setSessionTokenCookie } from "$lib/server/auth";
-import { github, createGitHubUser, getUserFromGitHubId, setGitHubToken } from "$lib/server/auth";
+import { github, createGitHubUser, getUserFromGitHubId, updateGitHubUser } from "$lib/server/auth";
 
 import type { RequestEvent } from "@sveltejs/kit";
 import type { OAuth2Tokens } from "arctic";
@@ -44,7 +44,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	const existingUser = await getUserFromGitHubId(githubUserId);
 
 	if (existingUser?.githubId) {
-		setGitHubToken(existingUser.githubId, githubToken)
+		updateGitHubUser(githubUserId, githubUsername, githubAvatarUrl, githubToken);
 		const sessionToken = generateSessionToken();
 		const session = await createSession(sessionToken, existingUser.id);
 		setSessionTokenCookie(event, sessionToken, session.expiresAt);
