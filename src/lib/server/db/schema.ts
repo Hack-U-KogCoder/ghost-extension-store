@@ -37,6 +37,7 @@ export const extension = sqliteTable("extension", {
 export const category = sqliteTable("category", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull().unique(),
+  nameJP: text("name-jp").notNull().unique(),
 });
 
 export type Session = typeof session.$inferSelect;

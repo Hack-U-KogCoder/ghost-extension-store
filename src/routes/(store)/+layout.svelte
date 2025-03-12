@@ -1,8 +1,8 @@
 <script lang="ts">
-	import "../../app.css";
-	import { enhance } from "$app/forms";
-	import type { LayoutProps } from "./$types";
-	let { data, children }: LayoutProps = $props();
+import "../../app.css";
+import { enhance } from "$app/forms";
+import type { LayoutProps } from "./$types";
+let { data, children }: LayoutProps = $props();
 </script>
 
 <header class="flex justify-between border-b border-gray-300 p-2 bg-stone-50">
@@ -21,5 +21,19 @@
 	</nav>
 </header>
 <div class="bg-amber-50 m-0 items-center">
-	{@render children()}
+	<div class="container mx-auto">
+		<div class="flex flex-col lg:flex-row">
+			<div class="m-3 p-2 border-1">
+				<h2 class="text-xl font-bold underline"><a href="/">カテゴリー一覧</a></h2>
+				{#each data.categories as cat (cat.id)}
+					<div>
+						<div><a href="/extensions/{cat.name}">{cat.name_JP}</a></div>
+					</div>
+				{/each}
+			</div>
+			<div class="m-3">
+				{@render children()}
+			</div>
+		</div>
+	</div>
 </div>

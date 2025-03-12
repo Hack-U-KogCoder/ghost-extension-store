@@ -25,7 +25,7 @@ export const load: PageServerLoad = async () => {
     .select({
       id: table.extension.id, title: table.extension.title, description: table.extension.description,
       icon_url: table.extension.icon_url, category_id: table.category.id, category_name: table.category.name,
-      version: table.extension.version,
+      category_name_JP: table.category.nameJP,version: table.extension.version,
       userId: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl,
       createdAt: table.extension.created_at, updatedAt: table.extension.updated_at,
     })
@@ -50,7 +50,7 @@ export const load: PageServerLoad = async () => {
     extensions: {
       id: number, title: string, description: string,
       icon_url: string, category_id: number, category_name: string,
-      version: string,
+      category_name_JP: string, version: string,
       userId: number, username: string, githubAvatarUrl: string | null,
       createdAt: Date, updatedAt: Date,
     }[],
@@ -61,7 +61,8 @@ export const load: PageServerLoad = async () => {
       extensionsByCategory[categoryKeys[e.category_id]].extensions.push(e);
     } else {
       categoryKeys[e.category_id] = extensionsByCategory.length;
-      extensionsByCategory.push({id: e.category_id, name: e.category_name, extensions: [e]});
+      extensionsByCategory.push({id: e.category_id,
+        name: e.category_name, name_JP: e.category_name_JP, extensions: [e]});
     }
   });
   return {
