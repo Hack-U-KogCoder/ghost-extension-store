@@ -3,14 +3,14 @@ import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
 export async function run_seed() {
   const categories = [
-    {id: 1, name: "仕事効率化"},
-    {id: 2, name: "コミュニケーション"},
-    {id: 3, name: "デベロッパーツール"},
-    {id: 4, name: "ライフスタイル"},
-    {id: 5, name: "ソーシャル"},
-    {id: 6, name: "情報"},
-    {id: 7, name: "趣味"},
-    {id: 99, name: "その他"},
+    {id: 1, name: "efficiency", nameJP: "仕事効率化"},
+    {id: 2, name: "communication", nameJP: "コミュニケーション"},
+    {id: 3, name: "developper", nameJP: "デベロッパーツール"},
+    {id: 4, name: "lifestyle", nameJP: "ライフスタイル"},
+    {id: 5, name: "social", nameJP: "ソーシャル"},
+    {id: 6, name: "infomatic", nameJP: "情報"},
+    {id: 7, name: "hobby", nameJP: "趣味"},
+    {id: 99, name: "other", nameJP: "その他"},
   ];
   const users = [
     {id: 1, githubId: 1, username: "kaori"},
