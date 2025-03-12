@@ -2,7 +2,7 @@ import type { PageServerLoad, Actions } from "./$types";
 import { fail } from "@sveltejs/kit";
 import { eq } from "drizzle-orm";
 import { db } from "$lib/server/db";
-import * as table from '$lib/server/db/schema';
+import * as table from "$lib/server/db/schema";
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.session === null) {
