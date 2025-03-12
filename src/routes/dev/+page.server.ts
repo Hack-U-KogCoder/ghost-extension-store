@@ -9,7 +9,7 @@ export const load: LayoutServerLoad = async (event) => {
   const result = await db
     .select({
       // Adjust user table here to tweak returned data
-      id: table.extension.id, title: table.extension.title, description: table.extension.description,
+      id: table.extension.id, name: table.extension.name, description: table.extension.description,
       createdAt: table.extension.created_at, updatedAt: table.extension.updated_at,
       userId: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl,
     })

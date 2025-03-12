@@ -11,6 +11,14 @@ function dateToString(date: Date) {
 }
 </script>
 
+<button
+    type="button"
+    onclick={() => {
+      history.back();
+    }}
+>
+    戻る
+</button>
 {#each data.extesionsByCategory as cat (cat.id)}
     <div class="w-full">
         <div class="flex flex-row justify-between">
@@ -29,7 +37,7 @@ function dateToString(date: Date) {
                         <img class="w-full h-auto" src={ext.icon_url} alt="イメージ" />
                         <a href="/extensions/detail/{ext.id.toString()}">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                {ext.title}
+                                {ext.name}
                             </h5>
                         </a>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{ext.description}</p>

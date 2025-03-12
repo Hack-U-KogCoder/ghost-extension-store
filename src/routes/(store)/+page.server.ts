@@ -6,24 +6,9 @@ import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async () => {
 
-  /*
-    const result = await db
-            .select({
-                // Adjust user table here to tweak returned data
-                id: table.extension.id, title: table.extension.title, description: table.extension.description,
-                 createdAt: table.extension.created_at, updatedAt: table.extension.updated_at,
-                userId: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl,
-            })
-            .from(table.extension)
-            .innerJoin(table.user, eq(table.extension.userId, table.user.id));
-
-    return {
-        extensions: result
-    };
-    */
   const dbRes = await db
     .select({
-      id: table.extension.id, title: table.extension.title, description: table.extension.description,
+      id: table.extension.id, name: table.extension.name, description: table.extension.description,
       icon_url: table.extension.icon_url, category_id: table.category.id, category_name: table.category.name,
       category_name_JP: table.category.nameJP,version: table.extension.version,
       userId: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl,
@@ -48,7 +33,7 @@ export const load: PageServerLoad = async () => {
   interface ExtensionsByCategory {
     [key: string]: string | number | {[key: string]: string | number | Date | null}[],
     extensions: {
-      id: number, title: string, description: string,
+      id: number, name: string, description: string,
       icon_url: string, category_id: number, category_name: string,
       category_name_JP: string, version: string,
       userId: number, username: string, githubAvatarUrl: string | null,

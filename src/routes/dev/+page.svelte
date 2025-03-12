@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { enhance } from "$app/forms";
-    import type { PageServerData } from "./$types";
+import { enhance } from "$app/forms";
+import type { PageServerData } from "./$types";
 
-    let { data }: { data: PageServerData } = $props();
+let { data }: { data: PageServerData } = $props();
 </script>
 
 <h1>開発者向けページ</h1>
@@ -11,8 +11,7 @@
         {data.user}
         <p>開発者向けのログインはこちらから</p>
         <form method="post" action="/login?/login_github" use:enhance>
-            <button
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >GitHubでログイン</button
             >
         </form>

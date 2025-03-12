@@ -12,7 +12,7 @@ export const load: PageServerLoad = async (event) => {
   const result = await db
     .select({
       // Adjust user table here to tweak returned data
-      id: table.extension.id, title: table.extension.title, description: table.extension.description,
+      id: table.extension.id, name: table.extension.name, description: table.extension.description,
       createdAt: table.extension.created_at, updatedAt: table.extension.updated_at,
       userId: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl,
     })
@@ -137,10 +137,12 @@ export const actions: Actions = {
       .innerJoin(table.user, eq(table.extension.userId, table.user.id))
       .where(eq(table.extension.githubId, repoId));
     console.log(dbRes);
+    /*
     if (dbRes) {
       return {
         status: {phase: 0, message: "このリポジトリはすでに登録されています", formRepoName: formRepoName}};
     }
+    */
     if (repoData.owner.id != event.locals.user.githubId) {
       return {
         status: {phase: 0, message: "リポジトリのオーナーのみ登録できます", formRepoName: formRepoName}};
@@ -167,7 +169,8 @@ export const actions: Actions = {
       }
     });
     if (!repoRes.ok) {
-      return {success: false};
+      return {
+        status: {phase: 0, message: "manifest.jsonの読み込みに失敗しました", formRepoName: formRepoName}};
     }
     const manifestData = await manifestRes.json();
 
@@ -176,8 +179,51 @@ export const actions: Actions = {
     );
     const githubManifestContent = new TextDecoder().decode(utf8Array);
     const manifestJS = JSON.parse(githubManifestContent);
+
+    const [dbCategory] = await db.select({id: table.category.id})
+      .from(table.category)
+      .where(eq(table.category.name, manifestJS.category));
+
+    if (!dbCategory) {
+      return {
+        status: {phase: 1, message: "categoryの値が不正です", formRepoName: formRepoName},
+        maniefst: manifestJS};
+    }
+
+    const iconPath = manifestJS.icon;
+    const iconRes = await fetch(`https://api.github.com/repos/${repoName}/contents/src/${iconPath}?ref=${tagname}`, {
+      headers: {
+        Authorization: `Bearer ${event.locals.user.githubToken}`,
+        "X-GitHub-Api-Version": "2022-11-28"
+      }
+    });
+    if (!repoRes.ok) {
+      return {success: false};
+    }
+    const iconData = await iconRes.json();
+    //const iconUrl = iconData.download_url;
+    /*
+    const extension = {
+      githubId: repoId,
+      userId: event.locals.user.id,
+      name: manifestJS.name,
+      description: manifestJS.description,
+      icon_url: iconUrl,
+      categoryId: dbCategory.id,
+      version: manifestJS.version,
+    };
+    try {
+      // await db.insert(table.extension).values(extension).returning();
+    } catch(e) {
+      console.log(e);
+      return {
+        status: {phase: 1, message: "登録に失敗しました。拡張機能の形式が不正です"},
+        repository: {name: repoName}, release: releaseData, manifest: manifestJS};
+    }
+    */
+
     return {
       status: {phase: 1, message: null},
-      repository: {name: repoName}, release: releaseData, manifest: manifestJS};
+      repository: {name: repoName}, release: releaseData, manifest: manifestJS, icon: iconData};
   },
 };
