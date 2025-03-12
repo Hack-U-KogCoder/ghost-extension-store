@@ -4,10 +4,10 @@ import type { PageProps } from "./$types";
 let { data }: PageProps = $props();
 
 function dateToString(date: Date) {
-    const y = date.getFullYear();
-    const m = (date.getMonth() + 1).toString().padStart(2, "0");
-    const d = date.getDate().toString().padStart(2, "0");
-    return `${y}年${m}月${d}日`;
+  const y = date.getFullYear();
+  const m = (date.getMonth() + 1).toString().padStart(2, "0");
+  const d = date.getDate().toString().padStart(2, "0");
+  return `${y}年${m}月${d}日`;
 }
 </script>
 
