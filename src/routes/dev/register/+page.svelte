@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { enhance } from "$app/forms";
-    import type { PageProps } from "./$types";
+import { enhance } from "$app/forms";
+import type { PageProps } from "./$types";
 
-    let { data, form }: PageProps = $props();
+let { data, form }: PageProps = $props();
 </script>
 
 <div class="container mx-auto px-4">
@@ -47,6 +47,12 @@
             <h2 class="text-xl font-bold underline">マニフェスト取得</h2>
             <div>
                 <pre class="whitespace-pre-wrap">{JSON.stringify(form?.manifest, null, "\t")}</pre>
+            </div>
+        </div>
+        <div class="m-2 p-2 size-fit max-w-full border-1 border-solid">
+            <h2 class="text-xl font-bold underline">アイコン取得</h2>
+            <div>
+                <pre class="whitespace-pre-wrap">{JSON.stringify(form?.icon, null, "\t")}</pre>
             </div>
         </div>
     {/if}

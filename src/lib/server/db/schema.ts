@@ -22,7 +22,7 @@ export const extension = sqliteTable("extension", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   githubId: integer("github_id").unique(),
   userId: integer("user_id").notNull().references(() => user.id),
-  title: text("title").notNull(),
+  name: text("name").notNull(),
   description: text("description").notNull(),
   icon_url: text("icon_url").notNull(),
   categoryId: integer("category_id").notNull().references(() => category.id),

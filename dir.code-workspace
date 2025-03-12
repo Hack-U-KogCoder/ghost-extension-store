@@ -35,7 +35,7 @@
 		"workbench.editor.labelFormat": "short",
 		"svelte.enable-ts-plugin": false,
 		"svelte.plugin.svelte.format.config.printWidth": 120,
-		"workbench.tree.indent": 4,
+		"workbench.tree.indent": 2,
 		"svelte.plugin.svelte.format.config.svelteIndentScriptAndStyle": false,
 	}
 }
