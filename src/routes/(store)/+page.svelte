@@ -12,64 +12,71 @@ function dateToString(date: Date) {
 </script>
 
 <button
-    type="button"
-    onclick={() => {
-      history.back();
-    }}
+  type="button"
+  onclick={() => {
+    history.back();
+  }}
 >
-    戻る
+  戻る
 </button>
 {#each data.extesionsByCategory as cat (cat.id)}
-    <div class="w-full">
-        <div class="flex flex-row justify-between">
-            <div class="flex">
-                <h2 class="text-xl font-bold underline"><a href="/extensions/{cat.name}">{cat.name_JP}</a></h2>
-            </div>
-            <div class="flex"><a href="/extensions/{cat.name}">もっと見る</a></div>
-        </div>
-        <div class="w-full flex flex-row flex-wrap">
-            {#each cat.extensions as ext (ext.id)}
-                <div class="mx-5 mt-5 mb-8 flex-initia">
-                    <div
-                        class="p-6 bg-white border border-gray-200 rounded-lg
-                                    shadow-sm dark:bg-gray-800 dark:border-gray-700"
-                    >
-                        <img class="w-full h-auto" src={ext.icon_url} alt="イメージ" />
-                        <a href="/extensions/detail/{ext.id.toString()}">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                {ext.name}
-                            </h5>
-                        </a>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{ext.description}</p>
-                        <p>最終更新: {dateToString(ext.updatedAt)}</p>
-                        <a
-                            href="/extensions/detail/{ext.id.toString()}"
-                            class="inline-flex items-center px-3 py-2 text-sm
+  <div class="mb-15">
+    <div class="flex flex-row justify-between">
+      <div class="">
+        <h2 class="text-2xl font-bold">
+          <a href="/extensions/{cat.name}">{cat.name_JP}</a>
+        </h2>
+      </div>
+      <div class="text-blue-700 hover:bg-blue-100 py-1 px-3 rounded-full">
+        <a href="/extensions/{cat.name}">もっと見る</a>
+      </div>
+    </div>
+    <div class="w-full flex flex-row flex-wrap">
+      {#each cat.extensions as ext (ext.id)}
+        <div class="mr-5 mt-3 flex-initia">
+          <div
+            class="px-6 pt-3 pb-3 bg-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
+          >
+            <img class="w-full h-auto" src={ext.icon_url} alt="イメージ" />
+            <a href="/extensions/detail/{ext.id.toString()}">
+              <h5
+                class="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+              >
+                {ext.name}
+              </h5>
+            </a>
+            <p class="mb-1 font-normal text-gray-700 dark:text-gray-400">
+              {ext.description}
+            </p>
+            <p class="mb-1">最終更新: {dateToString(ext.updatedAt)}</p>
+            <a
+              href="/extensions/detail/{ext.id.toString()}"
+              class="inline-flex items-center px-3 py-2 text-sm
                                         font-medium text-center text-white bg-blue-700
                                         rounded-lg hover:bg-blue-800 focus:ring-4
                                         focus:outline-none focus:ring-blue-300 dark:bg-blue-600
                                         dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        >
-                            詳細を見る
-                            <svg
-                                class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 14 10"
-                            >
-                                <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M1 5h12m0 0L9 1m4 4L9 9"
-                                />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            {/each}
+            >
+              詳細を見る
+              <svg
+                class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+            </a>
+          </div>
         </div>
+      {/each}
     </div>
+  </div>
 {/each}
