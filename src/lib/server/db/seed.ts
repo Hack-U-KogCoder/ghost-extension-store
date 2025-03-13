@@ -1,10 +1,9 @@
-import { eq } from "drizzle-orm";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
 import clipGhost from "$lib/assets/clipBoard.png";
 import searchGhost from "$lib/assets/search.png";
 import paintGhost from "$lib/assets/paint.png";
-import shortCutGhost from "$lib/assets/ShortCut.png";
+import shortCutGhost from "$lib/assets/shortCut.png";
 export async function run_seed() {
   const categories = [
     {id: 1, name: "efficiency", nameJP: "仕事効率化"},
@@ -105,13 +104,12 @@ export async function run_seed() {
       icon_url: ""
     },
   ];
-  const [dbRes] = await db
-    .select({id: table.category.id})
-    .from(table.category)
-    .where(eq(table.category.id, 1));
-  if (dbRes) {
-    return 1;
-  }
+
+  await db.delete(table.extension);
+  await db.delete(table.session);
+  await db.delete(table.user);
+  await db.delete(table.category);
+
   await db.insert(table.category).values(categories);
   await db.insert(table.user).values(users);
   await db.insert(table.extension).values(extensions);
