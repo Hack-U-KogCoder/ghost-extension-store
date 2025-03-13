@@ -3,6 +3,7 @@ import { fail } from "@sveltejs/kit";
 import { eq } from "drizzle-orm";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
+import { GITHUB_APP_NAME } from "$env/static/private";
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.session === null) {
@@ -31,6 +32,7 @@ export const load: PageServerLoad = async (event) => {
   }
   const response = await fetch(encodeURI(`https://api.github.com/search/repositories?q=user:${event.locals.user.username} topic:ghost-cursor is:public`), {
     headers: {
+      "User-Agent": GITHUB_APP_NAME,
       Authorization: `Bearer ${event.locals.user.githubToken}`,
       "X-GitHub-Api-Version": "2022-11-28"
     }
@@ -109,6 +111,7 @@ export const actions: Actions = {
 
     const repoRes = await fetch(`https://api.github.com/repos/${repoName}`, {
       headers: {
+        "User-Agent": GITHUB_APP_NAME,
         Authorization: `Bearer ${event.locals.user.githubToken}`,
         "X-GitHub-Api-Version": "2022-11-28"
       }
@@ -151,6 +154,7 @@ export const actions: Actions = {
 
     const releaseRes = await fetch(`https://api.github.com/repos/${repoName}/releases/latest`, {
       headers: {
+        "User-Agent": GITHUB_APP_NAME,
         Authorization: `Bearer ${event.locals.user.githubToken}`,
         "X-GitHub-Api-Version": "2022-11-28"
       }
@@ -164,6 +168,7 @@ export const actions: Actions = {
 
     const manifestRes = await fetch(`https://api.github.com/repos/${repoName}/contents/src/manifest.json?ref=${tagname}`, {
       headers: {
+        "User-Agent": GITHUB_APP_NAME,
         Authorization: `Bearer ${event.locals.user.githubToken}`,
         "X-GitHub-Api-Version": "2022-11-28"
       }
@@ -193,6 +198,7 @@ export const actions: Actions = {
     const iconPath = manifestJS.icon;
     const iconRes = await fetch(`https://api.github.com/repos/${repoName}/contents/src/${iconPath}?ref=${tagname}`, {
       headers: {
+        "User-Agent": GITHUB_APP_NAME,
         Authorization: `Bearer ${event.locals.user.githubToken}`,
         "X-GitHub-Api-Version": "2022-11-28"
       }

@@ -3,6 +3,7 @@ import { github, createGitHubUser, getUserFromGitHubId, updateGitHubUser } from 
 
 import type { RequestEvent } from "@sveltejs/kit";
 import type { OAuth2Tokens } from "arctic";
+import { GITHUB_APP_NAME } from "$env/static/private";
 
 export async function GET(event: RequestEvent): Promise<Response> {
   const code = event.url.searchParams.get("code");
@@ -29,9 +30,10 @@ export async function GET(event: RequestEvent): Promise<Response> {
     });
   }
   const githubToken = tokens.accessToken();
-
+  
   const githubUserResponse = await fetch("https://api.github.com/user", {
     headers: {
+      "User-Agent": GITHUB_APP_NAME,
       Authorization: `Bearer ${githubToken}`
     }
   });
