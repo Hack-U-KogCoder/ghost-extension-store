@@ -4,7 +4,7 @@ import * as table from "$lib/server/db/schema";
 import clipGhost from "$lib/assets/clipBoard.png";
 import searchGhost from "$lib/assets/search.png";
 import paintGhost from "$lib/assets/paint.png";
-import shortCutGhost from "$lib/assets/ShortCut.png";
+import shortCutGhost from "$lib/assets/shortCut.png";
 export async function run_seed() {
   const categories = [
     {id: 1, name: "efficiency", nameJP: "仕事効率化"},
