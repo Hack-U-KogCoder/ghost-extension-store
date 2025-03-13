@@ -20,16 +20,3 @@ const ext = data.extension;
 	<div>{ext?.createdAt}</div>
 	<div>{ext?.updatedAt}</div>
 </div>
-
-<form method="POST" action="?/login">
-	<label>
-		name
-		<input value={ext?.name} name="name" type="input" />
-	</label>
-	<label>
-		description
-		<input value={ext?.description} name="description" type="textarea" />
-	</label>
-	<button formaction="?/update">更新</button>
-	<button formaction="?/delete">削除</button>
-</form>
