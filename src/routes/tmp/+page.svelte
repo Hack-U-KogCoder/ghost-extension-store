@@ -1,15 +1,7 @@
 <script lang="ts">
-import { enhance } from "$app/forms";
 import type { PageProps } from "./$types";
 
-let { data, form }: PageProps = $props();
-
-function dateToString(date: Date) {
-    const y = date.getFullYear();
-    const m = (date.getMonth() + 1).toString().padStart(2, "0");
-    const d = date.getDate().toString().padStart(2, "0");
-    return `${y}年${m}月${d}日`;
-}
+let { data }: PageProps = $props();
 </script>
 
 <div class="container mx-auto my-3 px-4">
