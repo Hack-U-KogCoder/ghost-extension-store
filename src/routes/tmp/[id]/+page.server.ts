@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ params }) => {
   const [result] = await db
     .select({
       // Adjust user table here to tweak returned data
-      id: table.extension.id, title: table.extension.title, description: table.extension.description,
+      id: table.extension.id, name: table.extension.name, description: table.extension.description,
       createdAt: table.extension.created_at, updatedAt: table.extension.updated_at,
       userId: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl,
     })
@@ -42,7 +42,7 @@ export const actions: Actions = {
     const id = parseInt(event.params.id);
 
     const data = await event.request.formData();
-    const title = data.get("title")?.toString() ?? "";
+    const name = data.get("name")?.toString() ?? "";
     const description = data.get("description")?.toString() ?? "";
 
     const [result0] = await db
@@ -59,7 +59,7 @@ export const actions: Actions = {
     }
 
     const extension = {
-      title: title,
+      name: name,
       description: description
     };
     const [result] = await db
