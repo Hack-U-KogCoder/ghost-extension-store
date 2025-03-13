@@ -54,40 +54,7 @@ export const load: PageServerLoad = async (event) => {
           user: event.locals.user,
           extensions: result,
           suggestions: repos
-          // githubContent: await githubContent.text(),
         };
-  /*
-    const githubResponse0 = await fetch("https://api.github.com/repos/KTR200/gh-sample-extension/releases/latest", {
-		headers: {
-			Authorization: `Bearer ${event.locals.user.githubToken}`,
-            "X-GitHub-Api-Version": "2022-11-28"
-		}
-	});
-    const githubRelease0 = await githubResponse0.json();
-    const tagname = githubRelease0.tag_name
-
-    const githubResponse = await fetch(`https://api.github.com/repos/KTR200/gh-sample-extension/contents/src/manifest.json?ref=${tagname}`, {
-		headers: {
-			Authorization: `Bearer ${event.locals.user.githubToken}`,
-            "X-GitHub-Api-Version": "2022-11-28"
-		}
-	});
-
-	const githubManifest = await githubResponse.json();
-    const utf8Array = Uint8Array.from(
-        Array.from(atob(githubManifest.content)).map((s) => s.charCodeAt(0)),
-    );
-  const githubManifestContent = new TextDecoder().decode(utf8Array);
-    const manifestJS = JSON.parse(githubManifestContent)
-    
-        return {
-            user: event.locals.user,
-            extensions: result,
-            manifest: manifestJS,
-            // githubContent: await githubContent.text(),
-        };
-    */
-  // https://api.github.com/search/repositories?q=user:KTR200%20topic:ghost-cursor%20is:public%20sample%20in:name
 };
 
 
@@ -140,12 +107,12 @@ export const actions: Actions = {
       .innerJoin(table.user, eq(table.extension.userId, table.user.id))
       .where(eq(table.extension.githubId, repoId));
     console.log(dbRes);
-    /*
+
     if (dbRes) {
       return {
         status: {phase: 0, message: "このリポジトリはすでに登録されています", formRepoName: formRepoName}};
     }
-    */
+
     if (repoData.owner.id != event.locals.user.githubId) {
       return {
         status: {phase: 0, message: "リポジトリのオーナーのみ登録できます", formRepoName: formRepoName}};
@@ -185,7 +152,7 @@ export const actions: Actions = {
     const githubManifestContent = new TextDecoder().decode(utf8Array);
     const manifestJS = JSON.parse(githubManifestContent);
 
-    const [dbCategory] = await db.select({id: table.category.id})
+    const [dbCategory] = await db.select({id: table.category.id, name: table.category.name})
       .from(table.category)
       .where(eq(table.category.name, manifestJS.category));
 
@@ -203,12 +170,14 @@ export const actions: Actions = {
         "X-GitHub-Api-Version": "2022-11-28"
       }
     });
-    if (!repoRes.ok) {
-      return {success: false};
+    if (!iconRes.ok) {
+      return {
+        status: {phase: 1, message: "iconファイルが見つかりませんでした", formRepoName: formRepoName},
+        maniefst: manifestJS};
     }
     const iconData = await iconRes.json();
-    //const iconUrl = iconData.download_url;
-    /*
+    const iconUrl = iconData.download_url;
+
     const extension = {
       githubId: repoId,
       userId: event.locals.user.id,
@@ -216,20 +185,156 @@ export const actions: Actions = {
       description: manifestJS.description,
       icon_url: iconUrl,
       categoryId: dbCategory.id,
+      categoryName: dbCategory.name,
       version: manifestJS.version,
     };
+
     try {
       // await db.insert(table.extension).values(extension).returning();
     } catch(e) {
       console.log(e);
       return {
-        status: {phase: 1, message: "登録に失敗しました。拡張機能の形式が不正です"},
+        status: {phase: 1, message: "登録に失敗しました。拡張機能の形式が不正です", formRepoName: formRepoName},
         repository: {name: repoName}, release: releaseData, manifest: manifestJS};
     }
-    */
+
 
     return {
-      status: {phase: 1, message: null},
-      repository: {name: repoName}, release: releaseData, manifest: manifestJS, icon: iconData};
+      status: {phase: 1, message: null, formRepoName: formRepoName},
+      repository: {name: repoName}, release: releaseData, manifest: manifestJS, extension: extension};
+  },
+  register_submit: async (event) => {
+    if (!event.locals.user) {
+      return fail(403);
+    }
+        
+    const data = await event.request.formData();
+    const repoName = data.get("repository-name")?.toString() ?? "";
+   
+    const repoRes = await fetch(`https://api.github.com/repos/${repoName}`, {
+      headers: {
+        "User-Agent": GITHUB_APP_NAME,
+        Authorization: `Bearer ${event.locals.user.githubToken}`,
+        "X-GitHub-Api-Version": "2022-11-28"
+      }
+    });
+    if (!repoRes.ok) {
+      return {status: {phase: 2, message: "登録に失敗しました", formRepoName: repoName},
+        repository: {name: repoName}};
+    }
+    const repoData = await repoRes.json();
+    const repoId = repoData.id;
+    if (repoData.owner.type != "User") {
+      return {status: {phase: 2, message: "登録に失敗しました", formRepoName: repoName},
+        repository: {name: repoName}};
+    }
+    if (repoData.private) {
+      return {status: {phase: 2, message: "登録に失敗しました", formRepoName: repoName},
+        repository: {name: repoName}};
+    }
+
+    const [dbRes] = await db
+      .select({
+        // Adjust user table here to tweak returned data
+        githubid: table.extension.githubId, githubUserId: table.user.githubId
+      })
+      .from(table.extension)
+      .innerJoin(table.user, eq(table.extension.userId, table.user.id))
+      .where(eq(table.extension.githubId, repoId));
+    console.log(dbRes);
+    /*
+    if (dbRes) {
+      return {
+        status: {phase: 0, message: "このリポジトリはすでに登録されています", formRepoName: formRepoName}};
+    }
+    */
+    if (repoData.owner.id != event.locals.user.githubId) {
+      return {status: {phase: 2, message: "登録に失敗しました", formRepoName: repoName},
+        repository: {name: repoName}};
+    }
+
+
+    const releaseRes = await fetch(`https://api.github.com/repos/${repoName}/releases/latest`, {
+      headers: {
+        "User-Agent": GITHUB_APP_NAME,
+        Authorization: `Bearer ${event.locals.user.githubToken}`,
+        "X-GitHub-Api-Version": "2022-11-28"
+      }
+    });
+    if (!repoRes.ok) {
+      return {status: {phase: 2, message: "登録に失敗しました", formRepoName: repoName},
+        repository: {name: repoName}};
+    }
+    const releaseData = await releaseRes.json();
+    const tagname = releaseData.tag_name;
+
+    const manifestRes = await fetch(`https://api.github.com/repos/${repoName}/contents/src/manifest.json?ref=${tagname}`, {
+      headers: {
+        "User-Agent": GITHUB_APP_NAME,
+        Authorization: `Bearer ${event.locals.user.githubToken}`,
+        "X-GitHub-Api-Version": "2022-11-28"
+      }
+    });
+    if (!repoRes.ok) {
+      return {status: {phase: 2, message: "登録に失敗しました", formRepoName: repoName},
+        repository: {name: repoName}};
+    }
+    const manifestData = await manifestRes.json();
+
+    const utf8Array = Uint8Array.from(
+      Array.from(atob(manifestData.content)).map((s) => s.charCodeAt(0)),
+    );
+    const githubManifestContent = new TextDecoder().decode(utf8Array);
+    const manifestJS = JSON.parse(githubManifestContent);
+
+    const [dbCategory] = await db.select({id: table.category.id, name: table.category.name})
+      .from(table.category)
+      .where(eq(table.category.name, manifestJS.category));
+
+    if (!dbCategory) {
+      return {status: {phase: 2, message: "登録に失敗しました", formRepoName: repoName},
+        repository: {name: repoName}};
+    }
+
+    const iconPath = manifestJS.icon;
+    const iconRes = await fetch(`https://api.github.com/repos/${repoName}/contents/src/${iconPath}?ref=${tagname}`, {
+      headers: {
+        "User-Agent": GITHUB_APP_NAME,
+        Authorization: `Bearer ${event.locals.user.githubToken}`,
+        "X-GitHub-Api-Version": "2022-11-28"
+      }
+    });
+    if (!iconRes.ok) {
+      return {status: {phase: 2, message: "登録に失敗しました", formRepoName: repoName},
+        repository: {name: repoName}};
+    }
+    const iconData = await iconRes.json();
+    const iconUrl = iconData.download_url;
+
+    const extension = {
+      githubId: repoId,
+      userId: event.locals.user.id,
+      name: manifestJS.name,
+      description: manifestJS.description,
+      icon_url: iconUrl,
+      categoryId: dbCategory.id,
+      categoryName: dbCategory.name,
+      version: manifestJS.version,
+    };
+
+    try {
+      const [dbExtension] = await db.insert(table.extension).values(extension).returning();
+      if (!dbExtension) {
+        return {
+          status: {phase: 2, message: "登録に失敗しました。予期せぬエラーです", formRepoName: repoName}};
+      }
+      return {
+        status: {phase: 2, message: null},
+        extension: extension, created: true};
+    } catch(e) {
+      console.log(e);
+      return {
+        status: {phase: 2, message: "登録に失敗しました。拡張機能のマニフェストに不備があります", formRepoName: repoName}};
+    }
   },
 };
