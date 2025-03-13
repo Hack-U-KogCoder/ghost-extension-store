@@ -1,0 +1,41 @@
+{
+	"folders": [
+		{
+			"path": "./"
+		}
+	],
+	"settings": {
+		"files.eol": "\n",
+		// Linter
+		"eslint.useFlatConfig": true,
+		"eslint.workingDirectories": [
+		  "."
+		],
+		"editor.codeActionsOnSave": {
+		  "source.fixAll.eslint": "explicit",
+		},
+		// Formatter
+		"typescript.format.enable": false,
+		"eslint.format.enable": true,
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true,
+		"editor.formatOnType": true,
+		"eslint.nodePath": ".",
+		// 以降は各言語ごとの設定
+		"[typescript]": {
+		  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+		},
+		"[svelte]": {
+		  "editor.defaultFormatter": "svelte.svelte-vscode"
+		},
+		"[javascript]": {
+		  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+		},
+		"workbench.editor.labelFormat": "short",
+		"svelte.enable-ts-plugin": false,
+		"svelte.plugin.svelte.format.config.printWidth": 120,
+		"workbench.tree.indent": 2,
+		"svelte.plugin.svelte.format.config.svelteIndentScriptAndStyle": false,
+	}
+}
