@@ -5,7 +5,7 @@ import type { PageServerData } from "./$types";
 let { data }: { data: PageServerData } = $props();
 </script>
 
-<h1>開発者向けページ</h1>
+<h1 class="text-4xl">開発者向けページ</h1>
 {#if !data.user}
     <div class="m-2">
         {data.user}
