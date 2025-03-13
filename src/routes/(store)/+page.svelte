@@ -11,14 +11,6 @@ function dateToString(date: Date) {
 }
 </script>
 
-<button
-  type="button"
-  onclick={() => {
-    history.back();
-  }}
->
-  戻る
-</button>
 {#each data.extesionsByCategory as cat (cat.id)}
   <div class="mb-15">
     <div class="flex flex-row justify-between">

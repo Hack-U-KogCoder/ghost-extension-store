@@ -11,7 +11,16 @@ function dateToString(date: Date) {
 }
 </script>
 
-<div><a href="/">戻る</a></div>
+<div class="mb-4 flex gap-2">
+  <a href="/" class="text-blue-700 hover:text-blue-400">ストア</a>
+  {">"}
+  <a
+    href="/extensions/{data.category.name}"
+    class="text-blue-700 hover:text-blue-400"
+  >
+    {data.category.name_JP}
+  </a>
+</div>
 <h2 class="text-2xl font-bold">{data.category.name_JP}</h2>
 <div class="w-full flex flex-row flex-wrap">
   {#each data.extensions as ext (ext.id)}
