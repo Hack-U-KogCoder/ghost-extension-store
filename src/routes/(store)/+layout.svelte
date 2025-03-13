@@ -31,7 +31,7 @@ let { data, children }: LayoutProps = $props();
 <div class="bg-stone-50 m-0 pt-3 min-h-[94vh]">
   <div class="container">
     <div class="flex flex-col lg:flex-row">
-      <div class="my-3 ml-3 mr-20 p-2">
+      <div class="my-3 ml-3 mr-20 p-2 min-w-[150px]">
         <h2 class="text-xl font-bold">
           <a href="/">カテゴリー一覧</a>
         </h2>

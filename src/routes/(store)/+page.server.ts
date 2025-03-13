@@ -26,7 +26,7 @@ export const load: PageServerLoad = async () => {
             ON extension.category_id = category.id
         )
         WHERE
-        rank <= 5)`, eq(table.extension.id, sql`ext_id`))
+        rank <= 3)`, eq(table.extension.id, sql`ext_id`))
     .innerJoin(table.user, eq(table.extension.userId, table.user.id))
     .innerJoin(table.category, eq(table.extension.categoryId, table.category.id));
   const categoryKeys: {[key: number]: number} = {};
