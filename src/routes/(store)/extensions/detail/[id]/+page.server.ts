@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ params }) => {
     .select({
       id: table.extension.id, name: table.extension.name, description: table.extension.description,
       icon_url: table.extension.icon_url, zipball_url: table.extension.zipball_url,
-      category_id: table.category.id, category_name: table.category.name,
+      category_id: table.category.id, category_name: table.category.name, category_nameJP: table.category.nameJP,
       version: table.extension.version,
       userId: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl,
       createdAt: table.extension.created_at, updatedAt: table.extension.updated_at,
