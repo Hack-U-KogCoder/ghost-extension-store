@@ -5,10 +5,10 @@ import type { PageProps } from "./$types";
 let { data, form }: PageProps = $props();
 
 function dateToString(date: Date) {
-  const y = date.getFullYear();
-  const m = (date.getMonth() + 1).toString().padStart(2, "0");
-  const d = date.getDate().toString().padStart(2, "0");
-  return `${y}年${m}月${d}日`;
+    const y = date.getFullYear();
+    const m = (date.getMonth() + 1).toString().padStart(2, "0");
+    const d = date.getDate().toString().padStart(2, "0");
+    return `${y}年${m}月${d}日`;
 }
 </script>
 
@@ -17,42 +17,51 @@ function dateToString(date: Date) {
         <h1 class="text-3xl font-bold underline">{data.user.username}のGhostたち</h1>
         <div class="mt-5 mb-8 flex flex-row">
             {#each data.extensions as ext (ext.id)}
-                <div
-                    class="flex-4 max-w-sm m-5 p-6 bg-white border border-gray-200 rounded-lg
-                    shadow-sm"
-                >
-                    <a href="/extensions/detail/{ext.id.toString()}">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            {ext.name}
-                        </h5>
-                    </a>
-                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                        {ext.description}
-                    </p>
-                    <p>最終更新: {dateToString(ext.updatedAt)}</p>
-                    <a
-                        href="/extensions/detail/{ext.id.toString()}"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium
-                        text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800
-                        focus:ring-4 focus:outline-none focus:ring-blue-300"
-                    >
-                        詳細を見る
-                        <svg
-                            class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 14 10"
+                <div class="mr-5 mt-3 flex-initia">
+                    <div class="p-5 bg-white border border-gray-200 rounded-lg w-3xs h-[300px]">
+                        <img
+                            class="w-full h-1/2 object-cover rounded-lg bg-stone-50"
+                            src={ext.icon_url}
+                            alt="イメージ"
+                        />
+                        <a href="/extensions/detail/{ext.id.toString()}">
+                            <h5 class="my-1 text-2xl font-bold text-gray-900 dark:text-white">
+                                {ext.name}
+                            </h5>
+                        </a>
+                        <p class="my-1 text-xs text-gray-500">
+                            最終更新: {dateToString(ext.updatedAt)}
+                        </p>
+                        <p class="mt-1 font-normal text-sm text-gray-700 dark:text-gray-400 h-1/6">
+                            {ext.description}
+                        </p>
+
+                        <a
+                            href="/extensions/detail/{ext.id.toString()}"
+                            class="inline-flex items-center px-3 py-2 text-sm
+                                        font-medium text-center text-white bg-blue-700
+                                        rounded-lg hover:bg-blue-800 focus:ring-4
+                                        focus:outline-none focus:ring-blue-300 dark:bg-blue-600
+                                        dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M1 5h12m0 0L9 1m4 4L9 9"
-                            />
-                        </svg>
-                    </a>
+                            詳細を見る
+                            <svg
+                                class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 14 10"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M1 5h12m0 0L9 1m4 4L9 9"
+                                />
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             {/each}
             <div
