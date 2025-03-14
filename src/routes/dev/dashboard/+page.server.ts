@@ -13,7 +13,8 @@ export const load: PageServerLoad = async (event) => {
   const resExts = await db
     .select({
       // Adjust user table here to tweak returned data
-      id: table.extension.id, githubId: table.extension.githubId, name: table.extension.name, description: table.extension.description,
+      id: table.extension.id, githubId: table.extension.githubId,
+      name: table.extension.name, description: table.extension.description,
       createdAt: table.extension.created_at, updatedAt: table.extension.updated_at,
       userId: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl,
     })
