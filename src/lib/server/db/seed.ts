@@ -31,7 +31,8 @@ export async function run_seed() {
       description: "コピー&ペーストを行えます。クリップボードの履歴をさかのぼることもできます。", 
       categoryId: 1, 
       version: "0.0", 
-      icon_url: clipGhost
+      icon_url: clipGhost,
+      zipball_url: "",
     },
     {
       id: 2,
@@ -41,7 +42,8 @@ export async function run_seed() {
       description: "わざわざ検索エンジンを起動させなくても調べ物をすることができます。", 
       categoryId: 1, 
       version: "0.0", 
-      icon_url: searchGhost
+      icon_url: searchGhost,
+      zipball_url: "",
     },
     {
       id: 3, 
@@ -51,7 +53,8 @@ export async function run_seed() {
       description: "絵をかきます。筆を充電コードって呼ばないでください。", 
       categoryId: 7, 
       version: "0.0", 
-      icon_url: paintGhost
+      icon_url: paintGhost,
+      zipball_url: "",
     },
     {
       id: 4, 
@@ -61,7 +64,8 @@ export async function run_seed() {
       description: "他のユーティリティツールを使いたくなった時、このゴーストに触れれば、それらの機能を使用することができます。", 
       categoryId: 1, 
       version: "0.0", 
-      icon_url: shortCutGhost
+      icon_url: shortCutGhost,
+      zipball_url: "",
     },
     {
       id: 5, 
@@ -71,7 +75,8 @@ export async function run_seed() {
       description: "あらかじめ設定しておいたファイルをゴーストから開くことができます。", 
       categoryId: 1, 
       version: "0.0", 
-      icon_url: ""
+      icon_url: "",
+      zipball_url: "",
     },
     {
       id: 6, 
@@ -81,7 +86,8 @@ export async function run_seed() {
       description: "ゴーストから音量を調節できます。", 
       categoryId: 1, 
       version: "0.0", 
-      icon_url: ""
+      icon_url: "",
+      zipball_url: "",
     },
     {
       id: 7, 
@@ -91,7 +97,8 @@ export async function run_seed() {
       description: "ゴーストから画面の明るさを調節できます。", 
       categoryId: 1, 
       version: "0.0", 
-      icon_url: ""
+      icon_url: "",
+      zipball_url: "",
     },
     {
       id: 8, 
@@ -101,7 +108,8 @@ export async function run_seed() {
       description: "ゴーストをクリックすると発動し、カーソルを翳している部分が拡大して表示されます。", 
       categoryId: 1, 
       version: "0.0", 
-      icon_url: ""
+      icon_url: "",
+      zipball_url: "",
     },
   ];
 
