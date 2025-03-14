@@ -31,7 +31,6 @@ export const extension = sqliteTable("extension", {
     .default(sql`(unixepoch())`),
   updated_at: integer({ mode: "timestamp" }).notNull()
     .default(sql`(unixepoch())`)
-    .$onUpdate(() => new Date()),
 });
 
 export const category = sqliteTable("category", {
