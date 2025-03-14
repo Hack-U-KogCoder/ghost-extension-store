@@ -39,7 +39,7 @@ export const load: PageServerLoad = async (event) => {
     extensions: resExts,
     suggestions: suggestions
   };
-  const response = await fetch(encodeURI(`https://api.github.com/search/repositories?q=user:${event.locals.user.username} topic:ghost-cursor is:public`), {
+  const response = await fetch(encodeURI(`https://api.github.com/search/repositories?q=user:${event.locals.user.username} topic:booost-ghost is:public`), {
     headers: {
       "User-Agent": GITHUB_APP_NAME,
       Authorization: `Bearer ${event.locals.user.githubToken}`,
