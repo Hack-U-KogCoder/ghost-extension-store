@@ -42,7 +42,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
   const githubUsername = githubUser.login;
   const githubAvatarUrl = githubUser.avatar_url;
 
-  // TODO: Replace this with your own DB query.
   const existingUser = await getUserFromGitHubId(githubUserId);
 
   if (existingUser?.githubId) {
@@ -53,12 +52,11 @@ export async function GET(event: RequestEvent): Promise<Response> {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/dev/dashboard"
+        Location: "/dev"
       }
     });
   }
 
-  // TODO: Replace this with your own DB query.
   const user = await createGitHubUser(githubUserId, githubUsername, githubAvatarUrl, githubToken);
 
   const sessionToken = generateSessionToken();
@@ -68,7 +66,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
   return new Response(null, {
     status: 302,
     headers: {
-      Location: "/dev/dashboard"
+      Location: "/dev"
     }
   });
 }
