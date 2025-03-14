@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
 import { GITHUB_APP_NAME } from "$env/static/private";
+import { updated } from "$app/state";
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.session === null) {
@@ -13,7 +14,7 @@ export const load: PageServerLoad = async (event) => {
   const resExts = await db
     .select({
       // Adjust user table here to tweak returned data
-      id: table.extension.id, name: table.extension.name, description: table.extension.description,
+      id: table.extension.id, githubId: table.extension.githubId, name: table.extension.name, description: table.extension.description,
       createdAt: table.extension.created_at, updatedAt: table.extension.updated_at,
       userId: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl,
     })
@@ -25,10 +26,18 @@ export const load: PageServerLoad = async (event) => {
     return fail(401);
   }
 
+
+  type RepoDetail = {
+          id: number;
+          full_name: string;
+
+        };
+  const suggestions: RepoDetail[] = []
+
   const pageData = {
     user: event.locals.user,
     extensions: resExts,
-    suggestions: null
+    suggestions: suggestions
   };
   const response = await fetch(encodeURI(`https://api.github.com/search/repositories?q=user:${event.locals.user.username} topic:ghost-cursor is:public`), {
     headers: {
@@ -39,16 +48,15 @@ export const load: PageServerLoad = async (event) => {
   });
   if (response.ok) {
     const res_data = await response.json();
-          type RepoDetail = {
-            id: number;
-            full_name: string;
-
-          };
-          pageData.suggestions = await res_data.items.map((repo: RepoDetail) => {
-            return {id: repo.id, full_name: repo.full_name, };
+    const extensionGids = resExts.map(e => e.githubId)
+          await res_data.items.forEach((repo: RepoDetail) => {
+            if (!extensionGids.includes(repo.id)) {
+              suggestions.push({id: repo.id, full_name: repo.full_name, })
+            }
           });
+    pageData.suggestions = suggestions
+          
   }
-
   return pageData;
 };
 
@@ -181,7 +189,7 @@ export const actions: Actions = {
       icon_url: iconUrl,
       categoryId: dbCategory.id,
       categoryName: dbCategory.name,
-      version: manifestJS.version,
+      version: manifestJS.version
     };
 
     try {
@@ -315,6 +323,7 @@ export const actions: Actions = {
       categoryId: dbCategory.id,
       categoryName: dbCategory.name,
       version: manifestJS.version,
+      updated_at: new Date(repoData.updated_at)
     };
 
     try {
