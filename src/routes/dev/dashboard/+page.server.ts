@@ -15,6 +15,7 @@ export const load: PageServerLoad = async (event) => {
       // Adjust user table here to tweak returned data
       id: table.extension.id, githubId: table.extension.githubId,
       name: table.extension.name, description: table.extension.description,
+      icon_url: table.extension.icon_url,
       createdAt: table.extension.created_at, updatedAt: table.extension.updated_at,
       userId: table.user.id, username: table.user.username, githubAvatarUrl: table.user.githubAvatarUrl,
     })
@@ -39,7 +40,7 @@ export const load: PageServerLoad = async (event) => {
     extensions: resExts,
     suggestions: suggestions
   };
-  const response = await fetch(encodeURI(`https://api.github.com/search/repositories?q=user:${event.locals.user.username} topic:ghost-cursor is:public`), {
+  const response = await fetch(encodeURI(`https://api.github.com/search/repositories?q=user:${event.locals.user.username} topic:booost-ghost is:public`), {
     headers: {
       "User-Agent": GITHUB_APP_NAME,
       Authorization: `Bearer ${event.locals.user.githubToken}`,
@@ -129,12 +130,13 @@ export const actions: Actions = {
         "X-GitHub-Api-Version": "2022-11-28"
       }
     });
-    if (!repoRes.ok) {
+    if (!releaseRes.ok) {
       return {
         status: {phase: 0, message: "このリポジトリのリリースが見つかりません", formRepoName: formRepoName}};
     }
     const releaseData = await releaseRes.json();
     const tagname = releaseData.tag_name;
+    const zipball_url = releaseData.zipball_url;
 
     const manifestRes = await fetch(`https://api.github.com/repos/${repoName}/contents/src/manifest.json?ref=${tagname}`, {
       headers: {
@@ -143,7 +145,7 @@ export const actions: Actions = {
         "X-GitHub-Api-Version": "2022-11-28"
       }
     });
-    if (!repoRes.ok) {
+    if (!manifestRes.ok) {
       return {
         status: {phase: 0, message: "manifest.jsonの読み込みに失敗しました", formRepoName: formRepoName}};
     }
@@ -187,6 +189,7 @@ export const actions: Actions = {
       name: manifestJS.name,
       description: manifestJS.description,
       icon_url: iconUrl,
+      zipball_url: zipball_url,
       categoryId: dbCategory.id,
       categoryName: dbCategory.name,
       version: manifestJS.version
@@ -264,12 +267,13 @@ export const actions: Actions = {
         "X-GitHub-Api-Version": "2022-11-28"
       }
     });
-    if (!repoRes.ok) {
+    if (!releaseRes.ok) {
       return {status: {phase: 2, message: "登録に失敗しました", formRepoName: repoName},
         repository: {name: repoName}};
     }
     const releaseData = await releaseRes.json();
     const tagname = releaseData.tag_name;
+    const zipball_url = releaseData.zipball_url;
 
     const manifestRes = await fetch(`https://api.github.com/repos/${repoName}/contents/src/manifest.json?ref=${tagname}`, {
       headers: {
@@ -278,7 +282,7 @@ export const actions: Actions = {
         "X-GitHub-Api-Version": "2022-11-28"
       }
     });
-    if (!repoRes.ok) {
+    if (!manifestRes.ok) {
       return {status: {phase: 2, message: "登録に失敗しました", formRepoName: repoName},
         repository: {name: repoName}};
     }
@@ -320,6 +324,7 @@ export const actions: Actions = {
       name: manifestJS.name,
       description: manifestJS.description,
       icon_url: iconUrl,
+      zipball_url: zipball_url,
       categoryId: dbCategory.id,
       categoryName: dbCategory.name,
       version: manifestJS.version,
