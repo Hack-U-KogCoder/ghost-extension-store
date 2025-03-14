@@ -4,7 +4,6 @@ import { eq } from "drizzle-orm";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
 import { GITHUB_APP_NAME } from "$env/static/private";
-import { updated } from "$app/state";
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.session === null) {
@@ -28,11 +27,11 @@ export const load: PageServerLoad = async (event) => {
 
 
   type RepoDetail = {
-          id: number;
-          full_name: string;
+    id: number;
+    full_name: string;
 
-        };
-  const suggestions: RepoDetail[] = []
+  };
+  const suggestions: RepoDetail[] = [];
 
   const pageData = {
     user: event.locals.user,
@@ -48,13 +47,13 @@ export const load: PageServerLoad = async (event) => {
   });
   if (response.ok) {
     const res_data = await response.json();
-    const extensionGids = resExts.map(e => e.githubId)
-          await res_data.items.forEach((repo: RepoDetail) => {
-            if (!extensionGids.includes(repo.id)) {
-              suggestions.push({id: repo.id, full_name: repo.full_name, })
-            }
-          });
-    pageData.suggestions = suggestions
+    const extensionGids = resExts.map(e => e.githubId);
+    await res_data.items.forEach((repo: RepoDetail) => {
+      if (!extensionGids.includes(repo.id)) {
+        suggestions.push({id: repo.id, full_name: repo.full_name, });
+      }
+    });
+    pageData.suggestions = suggestions;
           
   }
   return pageData;
