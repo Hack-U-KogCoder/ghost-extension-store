@@ -42,7 +42,7 @@ let { data, children }: LayoutProps = $props();
           </div>
         {/each}
       </div>
-      <div class="m-3">
+      <div class="m-3 w-full">
         {@render children()}
       </div>
     </div>

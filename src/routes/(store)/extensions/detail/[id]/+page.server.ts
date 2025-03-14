@@ -24,12 +24,12 @@ export const load: PageServerLoad = async ({ params }) => {
     .innerJoin(table.user, eq(table.extension.userId, table.user.id))
     .innerJoin(table.category, eq(table.extension.categoryId, table.category.id))
     .where(eq(table.extension.id, id));
-    
+
   if (!result) {
     return error(404, {"message": "Page Not Found"});
   }
 
   return {
-    extension: result
+    extension: result,
   };
 };
