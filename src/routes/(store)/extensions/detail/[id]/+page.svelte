@@ -25,7 +25,7 @@ function imageCheck(imgurl: string) {
   <div class="text-4xl font-bold">{ext.name}</div>
   <img class="w-1/4 h-1/2 absolute top-30 left-150" src={imageCheck(ext.icon_url)} alt="イメージ" />
   <a
-    href=""
+    href={ext.zipball_url}
     class="px-3 py-2 font-medium text-center
          text-white bg-blue-700 hover:bg-blue-600
          hover:shadow-md rounded-lg absolute top-20 right-40">インストール</a
