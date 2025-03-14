@@ -25,6 +25,7 @@ export const extension = sqliteTable("extension", {
   name: text("name").notNull(),
   description: text("description").notNull(),
   icon_url: text("icon_url").notNull(),
+  zipball_url: text("zipball_url").notNull(),
   categoryId: integer("category_id").notNull().references(() => category.id),
   version: text("version").notNull(),
   created_at: integer({ mode: "timestamp" }).notNull()
