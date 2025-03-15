@@ -32,6 +32,9 @@ function imageCheck(imgurl: string) {
 }
 </script>
 
+<div class="mb-4 flex gap-2">
+  <a href="/" class="text-blue-700 hover:text-blue-400">ストア</a>
+</div>
 {#each data.extesionsByCategory as cat (cat.id)}
   <div class="mb-15">
     <div class="flex flex-row justify-between">
