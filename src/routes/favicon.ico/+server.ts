@@ -1,5 +1,5 @@
 import { error } from "@sveltejs/kit";
-import type { RequestHandler } from './$types';
+import type { RequestHandler } from "./$types";
 
 /**
  * 画像ファイルを読み込んで返す
@@ -20,4 +20,4 @@ export const GET: RequestHandler = async () => {
   const response = new Response(image);
   response.headers.set("Content-Type", "image/png");
   return response;
-}
+};

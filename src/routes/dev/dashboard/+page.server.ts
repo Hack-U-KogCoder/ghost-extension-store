@@ -49,7 +49,7 @@ export const load: PageServerLoad = async (event) => {
   });
   if (response.ok) {
     const res_data = await response.json();
-    console.log(res_data)
+    console.log(res_data);
     const extensionGids = resExts.map(e => e.githubId);
     await res_data.items.forEach((repo: RepoDetail) => {
       if (!extensionGids.includes(repo.id)) {
