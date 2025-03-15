@@ -32,7 +32,7 @@ let { data }: { data: PageServerData } = $props();
             <h1 class="text-2xl mb-2">使い方</h1>
             <p>ダッシュボードでは自身の制作した拡張機能(ゴースト)の登録と､登録済みゴーストの確認ができます｡</p>
             <p>登録は､登録フォームにGitHubリポジトリのURLを貼り付けてください｡</p>
-            <p>「XXX」のトピックが設定されている必要があります｡</p>
+            <p>「booost-ghost」のトピックが設定されている必要があります｡</p>
             <p>プライベートリポジトリには対応していません｡</p>
         </div>
         <div class="mb-3">
@@ -41,7 +41,7 @@ let { data }: { data: PageServerData } = $props();
                 ゴーストの開発は､
                 <a
                     class="text-blue-500 hover:text-blue-700"
-                    href="https://github.com/Hack-U-KogCoder/ghost-extension-store/"
+                    href="https://github.com/Hack-U-KogCoder/booost-ghost-sample"
                 >
                     テンプレートリポジトリ
                 </a>をforkのうえ､開発すると便利です｡
@@ -50,7 +50,7 @@ let { data }: { data: PageServerData } = $props();
             <p>
                 なお､便利な独自APIの用意がありますが､APIドキュメントは未整備です｡こちらの<a
                     class="text-blue-500 hover:text-blue-700"
-                    href="https://github.com/Hack-U-KogCoder/ghost-extension-store/"
+                    href="https://github.com/Hack-U-KogCoder/booost-ghost-app"
                 >
                     リポジトリ</a
                 >から Booost 本体のソースコードが閲覧できます｡ご利用ください｡
