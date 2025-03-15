@@ -6,9 +6,7 @@ import logo from "$lib/assets/logo.png";
 let { data, children }: LayoutProps = $props();
 </script>
 
-<header
-  class="flex justify-between border-b border-gray-300 p-2 bg-stone-50 min-h-[6vh]"
->
+<header class="flex justify-between border-b border-gray-300 p-2 bg-stone-50 min-h-[6vh]">
   <h1 class=" text-4xl font-bold">
     <a href="/"><img src={logo} alt="ロゴ" class="h-[4vh] ml-3" /></a>
   </h1>
@@ -16,11 +14,7 @@ let { data, children }: LayoutProps = $props();
     <div><a class="hover:border-b-2" href="/">ストア</a></div>
     <div><a class="hover:border-b-2" href="/dev">開発</a></div>
     {#if data.user}
-      <img
-        src={data.user.githubAvatarUrl}
-        alt="icon"
-        class="rounded-full h-auto w-10"
-      />
+      <img src={data.user.githubAvatarUrl} alt="icon" class="rounded-full h-auto w-10" />
       <form method="post" action="/user" use:enhance>
         <button>ログアウト</button>
       </form>
@@ -42,7 +36,7 @@ let { data, children }: LayoutProps = $props();
           </div>
         {/each}
       </div>
-      <div class="m-3">
+      <div class="m-3 w-full">
         {@render children()}
       </div>
     </div>

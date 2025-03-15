@@ -32,6 +32,9 @@ function imageCheck(imgurl: string) {
 }
 </script>
 
+<div class="mb-4 flex gap-2">
+  <a href="/" class="text-blue-700 hover:text-blue-400">ストア</a>
+</div>
 {#each data.extesionsByCategory as cat (cat.id)}
   <div class="mb-15">
     <div class="flex flex-row justify-between">
@@ -47,9 +50,7 @@ function imageCheck(imgurl: string) {
     <div class="w-full flex flex-row flex-wrap">
       {#each cat.extensions as ext (ext.id)}
         <div class="mr-5 mt-3 flex-initia">
-          <div
-            class="p-5 bg-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 w-3xs h-[300px]"
-          >
+          <div class="p-5 bg-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 w-3xs h-[300px]">
             <img
               class="w-full h-1/2 object-cover rounded-lg bg-stone-50"
               src={imageCheck(ext.icon_url)}
@@ -63,9 +64,7 @@ function imageCheck(imgurl: string) {
             <p class="my-1 text-xs text-gray-500">
               最終更新: {dateToString(ext.updatedAt)}
             </p>
-            <p
-              class="mt-1 font-normal text-sm text-gray-700 dark:text-gray-400 h-1/6"
-            >
+            <p class="mt-1 font-normal text-sm text-gray-700 dark:text-gray-400 h-1/6">
               {descriptionShorten(ext.description)}
             </p>
 
