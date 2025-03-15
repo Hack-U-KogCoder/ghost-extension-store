@@ -41,7 +41,7 @@ let { data }: { data: PageServerData } = $props();
                 ゴーストの開発は､
                 <a
                     class="text-blue-500 hover:text-blue-700"
-                    href="https://github.com/Hack-U-KogCoder/ghost-extension-store/"
+                    href="https://github.com/Hack-U-KogCoder/booost-ghost-sample"
                 >
                     テンプレートリポジトリ
                 </a>をforkのうえ､開発すると便利です｡
@@ -50,7 +50,7 @@ let { data }: { data: PageServerData } = $props();
             <p>
                 なお､便利な独自APIの用意がありますが､APIドキュメントは未整備です｡こちらの<a
                     class="text-blue-500 hover:text-blue-700"
-                    href="https://github.com/Hack-U-KogCoder/ghost-extension-store/"
+                    href="https://github.com/Hack-U-KogCoder/booost-ghost-app"
                 >
                     リポジトリ</a
                 >から Booost 本体のソースコードが閲覧できます｡ご利用ください｡
